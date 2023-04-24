@@ -1,16 +1,15 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 export const requireToken = (req, res, next) =>{
     try {
             let token = req.headers?.authorization;
-            console.log(token);
 
             if(!token)
                 throw new Error ('No Bearer')
 
                 token = token.split(" ") [1];
-                const {uid} = jwt.verify(token, process.env.JWT_SECRET)
+                const {uid} = jwt.verify(token, process.env.JWT_SECRET);
 
-                req.uid = uid
+                req.uid = uid;
 
             next();
         } catch (error) {
@@ -25,6 +24,6 @@ export const requireToken = (req, res, next) =>{
             };
             return res
             .status(401)
-            .json({error: tokenVerificationErrors[error.message]});
+            .send({error: tokenVerificationErrors[error.message]});
         }
 };
